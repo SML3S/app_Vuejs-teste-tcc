@@ -1,17 +1,85 @@
 <!DOCTYPE html>
-<html lang="">
-  <head>
-    <meta charset="utf-8">
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <title><%= htmlWebpackPlugin.options.title %></title>
-  </head>
-  <body>
-    <noscript>
-      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
-    </noscript>
-    <div id="app"></div>
-    <!-- built files will be auto injected -->
-  </body>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+    <title>Lista de clintes vuejs</title>
+</head>
+
+<body>
+
+
+    <div id="listClient" class="container-sm">
+        <h1 className="text-center"> Lista de Clientes</h1>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nome</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="state in states">
+                    <th>{{ state.id }}</th>
+                    <td>{{ state.name }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+
+
+        <button class="btn btn-secondary btn-sm" v-on:click=" getFullName()">Listar</button>
+
+
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6"></script>
+
+    <script>
+
+        let app = new Vue({
+
+            el: '#listClient',
+
+            data: {
+                name: 'Lista de Clientes',
+                states: []
+            },
+
+
+
+            methods: {
+                getFullName: function () {
+                    console.time("#buscarCliente");  
+                    fetch('http://localhost:8080/client')
+                        .then(response => {
+
+                            response.json().then(data => {
+
+                                this.states = data
+                            })
+
+                        }).catch(err => {
+                            console.log(err);
+                        })
+                        console.timeEnd("#buscarCliente");
+
+
+                }
+            }
+
+
+
+
+        });
+
+
+    </script>
+
+</body>
+
 </html>
